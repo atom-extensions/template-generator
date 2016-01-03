@@ -1,5 +1,13 @@
-"Sample Template Generator Group":
+"Sample Grou":
   type: "GROUP"
-  "SampleTemplate.coffee":
+  "Sample Coffe File.coffee":
     type: "FILE"
-    content: "[{[sampleText]}] [{[sampleTextNumber2]}]"
+SampleFolder:
+  type: "FOLDER"
+  "[{[fileName]}].coffee":
+    type: "FILE"
+    content: '''
+      [{[textToReplace]}]
+      
+      [{[textToReplace2]}]
+    '''

@@ -9,7 +9,7 @@ class TemplateGeneratorBottomPanel extends View
     @div class:'tg-settings-view-wrapper', =>
       @div class:'tg-panel-header', =>
         @span class:'icon icon-package text-error'
-        @span 'Meteor Assist Settings View',class:'text-highlight'
+        @span 'Template Generator Settings View',class:'text-highlight'
         @div class:'pull-right', =>
           @button 'Save', class:'padded btn btn-success icon icon-file-code', click:'saveSettings'
       @div class:'tg-panel-body', =>

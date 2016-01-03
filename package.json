@@ -2,14 +2,14 @@
   "name": "template-generator",
   "main": "./lib/main",
   "version": "0.0.0",
-  "description": "A short description of your package",
+  "description": "Create Templates of Files / file structure and create these files whenever you want and how ever you want",
   "keywords": [
   ],
   "activationCommands": {
     ".tree-view": "template-generator:toggle-template-generator",
     "atom-workspace": "template-generator:toggle-settings-view"
   },
-  "repository": "https://github.com/atom/template-generator",
+  "repository": "https://github.com/sdinesh86/template-generator",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"

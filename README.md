@@ -1,5 +1,5 @@
 # template-generator package
 
-A short description of your package.
+Save presets of Files and its contents and reuse them by replacing contents or file names etc.
 
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+![Demo GIF](./demoGIF.gif?raw=true)
