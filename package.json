@@ -1,10 +1,9 @@
 {
   "name": "template-generator",
   "main": "./lib/main",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Create Templates of Files / file structure and create these files whenever you want and how ever you want",
-  "keywords": [
-  ],
+  "keywords": [],
   "activationCommands": {
     ".tree-view": "template-generator:toggle-template-generator",
     "atom-workspace": "template-generator:toggle-settings-view"
