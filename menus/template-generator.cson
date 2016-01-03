@@ -1,0 +1,25 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+
+'context-menu':
+  '.tree-view.full-menu': [
+    {
+      'label': 'Generate Template'
+      'command': 'template-generator:toggle-template-generator'
+    }
+    {'type': 'separator'}
+  ]
+
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Template Generator'
+      'submenu': [
+        {
+          'label': 'Settings'
+          'command': 'template-generator:toggle-settings-view'
+        }
+      ]
+    ]
+  }
+]

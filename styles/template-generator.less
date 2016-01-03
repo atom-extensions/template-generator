@@ -1,0 +1,123 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+* {
+  box-sizing: border-box;
+}
+.tg-settings-view-wrapper {
+  height: 400px;
+  border: 1px solid @tool-panel-border-color;
+
+  .tg-panel-header {
+    padding: 0 1.5em;
+    height: 40px;
+    line-height: 3em;
+    border-bottom: 1px solid @tool-panel-border-color;
+  }
+
+  .tg-panel-body {
+    width: 100%;
+    height: calc(100% - 13px);
+    position: relative;
+
+    .tg-left-pane {
+      position: absolute;
+      left: 0;
+      right: 70%;
+      top: 0;
+      bottom: 0;
+      border-right: 1px solid @tool-panel-border-color;
+    }
+
+    .tg-right-pane {
+      position: absolute;
+      left: 30%;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.tg-tree-view-wrapper {
+  height: 100%;
+
+  .tg-tree-view-header {
+    height: 40px;
+    line-height: 35px;
+    padding: 0 1em;
+    border-bottom: 1px solid @tool-panel-border-color;
+    margin: 0px;
+  }
+
+  .select-list {
+    height: calc(100% - 16px);
+    >.list-group {
+      // border: 1px solid @tool-panel-border-color;
+      width: 100%;
+      overflow-y: auto;
+      margin: 0;
+      position: relative;
+      margin: 0;
+      height: 100%;
+
+      li {
+        padding: 0.5em 1em;
+        display: block;
+        background-color: @button-background-color;
+        border-bottom: 1px solid @tool-panel-border-color;
+
+        // &:hover { background-color: @button-background-color-hover; color: @tool-panel-background-color; }
+        &.selected { background-color: @tool-panel-background-color } //darken(@button-background-color-hover, 10%); }
+
+        & .editable-label::before {
+          font-family: "Octicons Regular";
+          content: "";
+          display: inline;
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+          font-weight: bold;
+          font-style: normal;
+          margin-right: 8px;
+          line-height: 1;
+        }
+
+        &[data-type="GROUP"] .editable-label::before {
+          content: "\f096"
+        }
+
+        &[data-type="FOLDER"] .editable-label::before {
+          content: "\f016"
+        }
+
+        &[data-type="FILE"] .editable-label::before {
+          content: "\f010"
+        }
+
+        ol.list-group {
+          max-height: 100%;
+
+          li {
+            padding-right: 0;
+          }
+          &:empty {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.editable-label {
+  width: 50%;
+  .title-label,
+  .title-editbox {
+    display: inline-block;
+    width: 100%;
+  }
+}

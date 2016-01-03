@@ -1,0 +1,5 @@
+"Sample Template Generator Group":
+  type: "GROUP"
+  "SampleTemplate.coffee":
+    type: "FILE"
+    content: "[{[sampleText]}] [{[sampleTextNumber2]}]"

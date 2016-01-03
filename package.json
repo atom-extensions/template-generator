@@ -1,0 +1,25 @@
+{
+  "name": "template-generator",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationCommands": {
+    ".tree-view": "template-generator:toggle-template-generator",
+    "atom-workspace": "template-generator:toggle-settings-view"
+  },
+  "repository": "https://github.com/atom/template-generator",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-space-pen-views": "^2.1.0",
+    "fs-plus": "^2.8.1",
+    "fuzzaldrin": "^2.1.0",
+    "jquery": "^2.1.4",
+    "season": "^5.3.0",
+    "underscore": "^1.8.3"
+  }
+}
