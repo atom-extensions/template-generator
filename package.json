@@ -1,7 +1,7 @@
 {
   "name": "template-generator",
   "main": "./lib/main",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Create Templates of Files / file structure and create these files whenever you want and how ever you want",
   "keywords": [],
   "activationCommands": {
