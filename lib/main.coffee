@@ -27,22 +27,18 @@ module.exports = TemplateGenerator =
 
     @maSettingsView
 
-  createTemplateSelectorDialog: ( args ) ->
+  createTemplateSelectorDialog: (  ) ->
     unless @maTemplateSelectorDialog?
       TemplateSelectorDialog ?= require './template-generator-template-selector-dialog'
-      @maTemplateSelectorDialog = new TemplateSelectorDialog( args )
+      @maTemplateSelectorDialog = new TemplateSelectorDialog(  )
 
     @maTemplateSelectorDialog
 
   toggleTemplateSelectorDialog: ->
-    pkgTreeView = atom.packages.getActivePackage('tree-view')
-    selectedEntry = pkgTreeView.mainModule.treeView.selectedEntry() ? pkgTreeView.mainModule.treeView.roots[0]
-    selectedPath = selectedEntry?.getPath() ? ''
-
     configFilePath = atom.config.get('template-generator.templatesFilePath')
     CSON.readFile configFilePath, ( err, json ) =>
         if json?
-          dialog = @createTemplateSelectorDialog( {selectedPath} )
+          dialog = @createTemplateSelectorDialog( )
           dialog.setItems( json )
           dialog.attach()
 

@@ -45,8 +45,11 @@ class TemplateSelectorListView extends SelectListView
     @selectItemView(@list.find('li:first'))
 
   confirmed: ( template ) ->
+    pkgTreeView = atom.packages.getActivePackage('tree-view')
+    selectedEntry = pkgTreeView.mainModule.treeView.selectedEntry() ? pkgTreeView.mainModule.treeView.roots[0]
+    selectedPath = selectedEntry?.getPath() ? ''
+
     FieldsListDialog ?= require './template-generator-fields-list'
-    selectedPath = @selectedPath
     maFieldsListDialog = new FieldsListDialog( { template, selectedPath} )
     maFieldsListDialog.attach()
     @close()

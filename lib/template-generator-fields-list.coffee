@@ -5,6 +5,13 @@ CSON = require 'season'
 
 buildTextEditor = require './build-text-editor'
 
+textEditor = buildTextEditor
+  mini: true
+  tabLength: 2
+  softTabs: true
+  softWrapped: false
+  placeholderText: ''
+
 module.exports =
 class FieldsListView extends View
 
@@ -14,6 +21,7 @@ class FieldsListView extends View
         @span 'List of Fields you would like to replace in the files and file names'
       @div class:'panel-body', =>
         @div class:'block fields-list select-list', =>
+          @subview 'selectedPathTextField', new TextEditorView(editor: textEditor)
           @ol class:'fields-group list-group', outlet:'fieldsList'
         @div class:'block btn-toolbar', =>
           @div class:'btn-group', =>
@@ -23,10 +31,11 @@ class FieldsListView extends View
   initialize: ( {template, selectedPath}={} ) ->
     @template = template
     @selectedPath = selectedPath
-
+    console.log selectedPath
+    @selectedPathTextField.getModel().setText( TemplateGeneratorUtilities.getRelativePathToProject(selectedPath) )
     atom.commands.add @element,
       'tg-fields-list-view:focus-next': ( e ) => @focusNextInput(1)
-      'tg-fields-list-view:focus-previous': ( e ) => @focusPreviousInput(-1)
+      'tg-fields-list-view:focus-previous': ( e ) => @focusNextInput(-1)
       'core:cancel': ( e ) => @close()
 
 
@@ -57,16 +66,13 @@ class FieldsListView extends View
     elements = $(@fieldsList).find( 'atom-text-editor' ).toArray()
     focusedElement = _.find elements, ( el ) -> $(el).hasClass('is-focused')
     focusedIndex = elements.indexOf focusedElement
-    console.log focusedElement, elements
+
     focusedIndex = focusedIndex + direction
     focusedIndex = 0 if focusedIndex >= elements.length
     focusedIndex = elements.length - 1 if focusedIndex < 0
 
     elements[focusedIndex].focus()
     # elements[focusedIndex].getModel?().selectAll()
-
-  focusPreviousInput: ( direction ) ->
-
 
   # close: Close the view
   #
@@ -77,16 +83,15 @@ class FieldsListView extends View
     panelToDestroy?.destroy()
 
   viewForItem : ( item, nIndex ) ->
-    textEditor = buildTextEditor
-      mini: true
-      tabLength: 2
-      softTabs: true
-      softWrapped: false
-      placeholderText: item
 
     $$ ->
       @li =>
-        @subview "item-#{nIndex}", new TextEditorView(editor: textEditor)
+        @subview "item-#{nIndex}", new TextEditorView(editor: buildTextEditor
+          mini: true
+          tabLength: 2
+          softTabs: true
+          softWrapped: false
+          placeholderText: item)
 
   # populateFields: Populate all the fields in the modal panel
   #

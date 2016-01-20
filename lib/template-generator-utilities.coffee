@@ -5,6 +5,9 @@ _fs = require 'fs-plus'
 
 module.exports =
 
+  getRelativePathToProject: ( path ) ->
+    Path.relative( atom.project.getPaths()[0], path )
+
   getTemplatesDataFromFile: ->
     configFilePath = atom.config.get('template-generator.templatesFilePath')
 
