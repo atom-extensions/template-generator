@@ -9,3 +9,7 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-workspace':
   'alt-n': 'template-generator:toggle-settings-view'
+
+'.tg-fields-list-view, .fields-group':
+  'tab': 'tg-fields-list-view:focus-next'
+  'shift-tab': 'tg-fields-list-view:focus-previous'

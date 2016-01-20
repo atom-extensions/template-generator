@@ -1,13 +1,11 @@
-"Sample Grou":
-  type: "GROUP"
-  "Sample Coffe File.coffee":
-    type: "FILE"
-SampleFolder:
-  type: "FOLDER"
-  "[{[fileName]}].coffee":
-    type: "FILE"
-    content: '''
-      [{[textToReplace]}]
-      
-      [{[textToReplace2]}]
-    '''
+"[{[fileName]}].jsx":
+  type: "FILE"
+  content: '''
+    [{[componentName]}] = React.createClass ( {
+      render ( ) {
+        (
+          
+        )
+      }
+    } );
+  '''
