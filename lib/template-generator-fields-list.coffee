@@ -31,8 +31,8 @@ class FieldsListView extends View
   initialize: ( {template, selectedPath}={} ) ->
     @template = template
     @selectedPath = selectedPath
-    console.log selectedPath
-    @selectedPathTextField.getModel().setText( TemplateGeneratorUtilities.getRelativePathToProject(selectedPath) )
+    @relativePath = TemplateGeneratorUtilities.getRelativePathToProject(selectedPath)
+    @selectedPathTextField.getModel().setText( @relativePath )
     atom.commands.add @element,
       'tg-fields-list-view:focus-next': ( e ) => @focusNextInput(1)
       'tg-fields-list-view:focus-previous': ( e ) => @focusNextInput(-1)
@@ -55,8 +55,9 @@ class FieldsListView extends View
       fieldValue = fElement.children[0].getModel().getText()
       sFieldsArray.push [fieldName, fieldValue]
 
+    targetPath = "#{atom.project.getPaths()[0]}\\#{@selectedPathTextField.getModel().getText()}"
     transformedTemplate = TemplateGeneratorUtilities.tansformTemplateObjectWithFields @template, sFieldsArray
-    TemplateGeneratorUtilities.generateFilesUsingTemplateObject transformedTemplate, @selectedPath
+    TemplateGeneratorUtilities.generateFilesUsingTemplateObject transformedTemplate, targetPath
 
     @close()
 
@@ -107,7 +108,7 @@ class FieldsListView extends View
       @fieldsList.append itemView
       nTabIndex++
 
-
+    @fieldsList.find('atom-text-editor')[0].focus()
 
   # attach: Attach the view to atom and display it
   #
