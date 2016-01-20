@@ -1,6 +1,7 @@
 {SelectListView, $$, $ } = require 'atom-space-pen-views'
 CSON = require 'season'
 _ = require 'underscore'
+TemplateGeneratorUtilities = require './template-generator-utilities'
 
 FieldsListDialog = null
 fuzzyFilter = null
@@ -48,6 +49,7 @@ class TemplateSelectorListView extends SelectListView
     pkgTreeView = atom.packages.getActivePackage('tree-view')
     selectedEntry = pkgTreeView.mainModule.treeView.selectedEntry() ? pkgTreeView.mainModule.treeView.roots[0]
     selectedPath = selectedEntry?.getPath() ? ''
+    selectedPath = TemplateGeneratorUtilities.getDirname(selectedPath)
 
     FieldsListDialog ?= require './template-generator-fields-list'
     maFieldsListDialog = new FieldsListDialog( { template, selectedPath} )
@@ -65,3 +67,25 @@ class TemplateSelectorListView extends SelectListView
   attach: ->
     @panel = atom.workspace.addModalPanel(item: this)
     @focusFilterEditor()
+
+  # hide: Hide the bottom panel
+  #
+  # Returns the [Description] as `undefined`.
+  hide: ->
+    @panel.hide()
+
+  # show: Show the Bottom Panel
+  #
+  # Returns the [Description] as `undefined`.
+  show: ->
+    @panel ?= atom.workspace.addBottomPanel(item:this)
+    @panel.show()
+
+  # toggle: Toggle the bottom Panel
+  #
+  # Returns the [Description] as `undefined`.
+  toggle: ->
+    if @panel?.isVisible()
+      @close()
+    else
+      @attach()

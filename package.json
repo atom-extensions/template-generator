@@ -4,10 +4,6 @@
   "version": "0.2.0",
   "description": "Create Templates of Files / file structure and create these files whenever you want and how ever you want",
   "keywords": [],
-  "activationCommands": {
-    ".tree-view": "template-generator:toggle-template-generator",
-    "atom-workspace": "template-generator:toggle-settings-view"
-  },
   "repository": "https://github.com/sdinesh86/template-generator.git",
   "license": "MIT",
   "engines": {
@@ -15,6 +11,7 @@
   },
   "dependencies": {
     "atom-space-pen-views": "^2.1.0",
+    "event-kit": "^1.0.0",
     "fs-plus": "^2.8.1",
     "fuzzaldrin": "^2.1.0",
     "jquery": "^2.1.4",

@@ -1,4 +1,4 @@
-
+{CompositeDisposable} = require 'event-kit'
 CSON = require 'season'
 
 TemplateSelectorDialog = null
@@ -13,12 +13,12 @@ module.exports = TemplateGenerator =
 
 
   activate: ( state ) ->
+    @disposables = new CompositeDisposable
 
-    # Register command for views
-    atom.commands.add 'atom-workspace', 'template-generator:toggle-settings-view': =>
-      @createSettingsView().toggle()
-    atom.commands.add '.tree-view', 'template-generator:toggle-template-generator': =>
-      @toggleTemplateSelectorDialog()
+    @disposables.add atom.commands.add('atom-workspace', {
+      'template-generator:toggle-settings-view': => @createSettingsView().toggle()
+      'template-generator:toggle-template-generator': => @toggleTemplateSelectorDialog()
+    })
 
   createSettingsView: ->
     unless @maSettingsView?
@@ -35,13 +35,15 @@ module.exports = TemplateGenerator =
     @maTemplateSelectorDialog
 
   toggleTemplateSelectorDialog: ->
+    console.log "Toggling the Dialog"
     configFilePath = atom.config.get('template-generator.templatesFilePath')
+    dialog = @createTemplateSelectorDialog( )
     CSON.readFile configFilePath, ( err, json ) =>
         if json?
-          dialog = @createTemplateSelectorDialog( )
           dialog.setItems( json )
-          dialog.attach()
+          dialog.toggle()
 
   deactivate: ->
+    @disposables.dispose()
 
   serialize: ->

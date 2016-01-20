@@ -5,6 +5,12 @@ _fs = require 'fs-plus'
 
 module.exports =
 
+  getDirname: ( path ) ->
+    if _fs.isFileSync( path )
+      Path.dirname(path)
+    else
+      path
+
   getRelativePathToProject: ( path ) ->
     Path.relative( atom.project.getPaths()[0], path )
 
