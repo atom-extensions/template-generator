@@ -1,11 +1,25 @@
-"[{[fileName]}].jsx":
-  type: "FILE"
-  content: '''
-    [{[componentName]}] = React.createClass ( {
-      render ( ) {
-        (
+"Blaze Meteor Template":
+  type: "GROUP"
+  "[{[templateName]}].html":
+    type: "FILE"
+    content: '''
+      <template name="[{[templateName]}]">
+        
+      </template>
+    '''
+  "[{[templateName]}].js":
+    type: "FILE"
+    content: '''
+      Template.[{[templateName]}].helpers ( { 
+        
+      } );
+       
+       Template.[{[templateName]}].events ( { 
+         
+       } );
+       
+        
+        Template.[{[templateName]}].onRendered ( ( ) => { 
           
-        )
-      }
-    } );
-  '''
+        } );  
+    '''
