@@ -93,7 +93,7 @@ module.exports =
       strReplace = ( str ) ->
         ret = str
         for field in sFieldsArray
-          ret = ret.replace "[{[#{field[0]}]}]", field[1]
+          ret = ret.replace ///\[\{\[#{field[0]}\]\}\]///g, field[1]
         ret
 
       # Iterate over every property in the Object and replace fields
