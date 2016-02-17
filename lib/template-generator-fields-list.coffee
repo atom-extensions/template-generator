@@ -2,6 +2,7 @@
 TemplateGeneratorUtilities = require './template-generator-utilities'
 _ = require 'underscore'
 CSON = require 'season'
+path = require 'path'
 
 buildTextEditor = require './build-text-editor'
 
@@ -55,7 +56,7 @@ class FieldsListView extends View
       fieldValue = fElement.children[0].getModel().getText()
       sFieldsArray.push [fieldName, fieldValue]
 
-    targetPath = "#{atom.project.getPaths()[0]}\\#{@selectedPathTextField.getModel().getText()}"
+    targetPath = path.join("#{atom.project.getPaths()[0]}","#{@selectedPathTextField.getModel().getText()}")
     transformedTemplate = TemplateGeneratorUtilities.tansformTemplateObjectWithFields @template, sFieldsArray
     TemplateGeneratorUtilities.generateFilesUsingTemplateObject transformedTemplate, targetPath
 
