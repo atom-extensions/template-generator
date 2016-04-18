@@ -1,5 +1,6 @@
 {CompositeDisposable} = require 'event-kit'
 CSON = require 'season'
+path = require 'path'
 
 TemplateSelectorDialog = null
 
@@ -7,7 +8,7 @@ module.exports = TemplateGenerator =
   config:
     templatesFilePath:
       type:'string'
-      default:"#{atom.packages.resolvePackagePath('template-generator')}\\templates.cson"
+      default:path.join("#{atom.packages.resolvePackagePath('template-generator')}","templates.cson")
       title:'Templates File'
       description:'Templates File to store all the Templates data'
 
