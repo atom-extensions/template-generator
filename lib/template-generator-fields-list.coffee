@@ -103,13 +103,14 @@ class FieldsListView extends View
   populateFields: ( fields ) ->
     @fieldsList.empty()
     nTabIndex = 1
-    for field in fields
-      itemView = $(@viewForItem(field, nTabIndex))
-      itemView.data('field-item-data', field)
-      @fieldsList.append itemView
-      nTabIndex++
+    if fields.length > 0
+        for field in fields
+          itemView = $(@viewForItem(field, nTabIndex))
+          itemView.data('field-item-data', field)
+          @fieldsList.append itemView
+          nTabIndex++
 
-    @fieldsList.find('atom-text-editor')[0].focus()
+        @fieldsList.find('atom-text-editor')[0].focus()
 
   # attach: Attach the view to atom and display it
   #
@@ -117,4 +118,5 @@ class FieldsListView extends View
   attach: ->
     @panel = atom.workspace.addModalPanel(item: this)
     fieldsList = TemplateGeneratorUtilities.parseTemplate( @template )
+
     @populateFields(_.uniq fieldsList)
