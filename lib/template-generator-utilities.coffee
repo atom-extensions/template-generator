@@ -57,7 +57,7 @@ module.exports =
 
   getFieldsFromTemplate: ( str ) ->
     retArr = []
-    regex = /(\[\{\[([a-zA-Z0-9]+)\]\}\])/g
+    regex = /(\[\{\[([a-zA-Z0-9_]+)\]\}\])/g
 
     # Check for fields in the Template content property
     match = regex.exec( str )
