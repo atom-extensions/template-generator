@@ -36,7 +36,7 @@ module.exports = TemplateGenerator =
     @maTemplateSelectorDialog
 
   toggleTemplateSelectorDialog: ->
-    console.log "Toggling the Dialog"
+
     configFilePath = atom.config.get('template-generator.templatesFilePath')
     dialog = @createTemplateSelectorDialog( )
     CSON.readFile configFilePath, ( err, json ) =>
