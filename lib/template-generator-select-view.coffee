@@ -36,14 +36,6 @@ class TemplateGeneratorSelectListView extends View
         @expandListItem li
       else
         @closeListItem li
-      # list = li.children('ol.list-group')
-      # own = $(e.target)
-      # if own.hasClass('icon-chevron-down')
-      #   list.slideUp(200)
-      #   own.removeClass('icon-chevron-down').addClass('icon-chevron-right')
-      # else
-      #   list.slideDown(200)
-      #   own.removeClass('icon-chevron-right').addClass('icon-chevron-down')
 
   expandListItem: ( liItem ) ->
     dropDownIcon = $(liItem).children('span.dropdown-icon')
