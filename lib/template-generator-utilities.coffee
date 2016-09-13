@@ -2,6 +2,9 @@ CSON = require 'season'
 _ = require 'underscore'
 Path = require 'path'
 _fs = require 'fs-plus'
+_rq = require 'request'
+
+
 
 module.exports =
 
@@ -30,9 +33,9 @@ module.exports =
   generateFilesUsingTemplateObject: ( templateObject, parentFolder ) ->
     bSuccess = true
     iterateOverObject = ( obj, sParentFolderPath ) ->
-
       for key of obj
         item = obj[key]
+        console.log(key);
         sFilePath = "#{sParentFolderPath}//#{key}"
 
         if item.type == "FOLDER"
@@ -42,6 +45,20 @@ module.exports =
             _fs.makeTreeSync sFilePath
 
           iterateOverObject item, sFilePath
+
+        else if item.type == "URL"
+          if _fs.existsSync sFilePath
+            atom.notifications.addWarning "Error Occured while trying to create file #{sFilePath} File already axists at the Location"
+          else
+            downloadFile = (sFP, sURL) ->
+              _rq.get {uri: sURL, encoding: null}, (error, response, body) ->
+                if !error && response.statusCode == 200
+                  _fs.writeFileSync sFP, body
+                else
+                  atom.notifications.addError "Fetching file at #{sURL} threw an error"
+              console.log(sFP)
+            downloadFile sFilePath, item.content
+
         else if item.type == "FILE"
           if _fs.existsSync sFilePath
             atom.notifications.addWarning "Error Occured while trying to create file #{sFilePath} File already axists at the Location"

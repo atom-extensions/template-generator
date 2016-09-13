@@ -1,25 +1,25 @@
-"Sample Template":
+Eh:
   type: "GROUP"
-  "[{[templateName]}].html":
+  "EHEHHH.txt":
+    type: "URL"
+    content: "http://bitten-byte.com/file.txt"
+  "[{name}].jpg":
+    type: "URL"
+    content: "http://bitten-byte.com/file.jpg"
+  "ad.jpg":
+    type: "URL"
+    content: "http://bitten-byte.com/file.png"
+  "FILE 4.ext":
     type: "FILE"
-    content: '''
-      <template name="[{[templateName]}]">
-
-      </template>
-    '''
-  "[{[templateName]}].js":
+  "FILE 5.ext":
     type: "FILE"
-    content: '''
-      Template.[{[templateName]}].helpers ( {
-
-      } );
-
-       Template.[{[templateName]}].events ( {
-
-       } );
-
-
-        Template.[{[templateName]}].onRendered ( ( ) => {
-
-        } );
-    '''
+  "FILE 6.ext":
+    type: "FILE"
+"GROUP 1":
+  type: "GROUP"
+  "FILE 0.ext":
+    type: "FILE"
+  "FILE 1.ext":
+    type: "FILE"
+  "FOLDER 2":
+    type: "FOLDER"

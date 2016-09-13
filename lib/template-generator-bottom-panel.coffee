@@ -12,10 +12,13 @@ class TemplateGeneratorBottomPanel extends View
         @span 'Template Generator Settings View',class:'text-highlight'
         @div class:'pull-right', =>
           @button 'Save', class:'padded btn btn-success icon icon-file-code', click:'saveSettings'
+          @span ' '
+          @button 'Close', class: 'padded btn btn-warning icon icon-remove-close', click:'hide'
       @div class:'tg-panel-body', =>
         @div class:'tg-left-pane', =>
           @subview 'tgSelectListView', new TemplateGeneratorSelectListView()
         @div class:'tg-right-pane', outlet:'tgRightPane', =>
+          @span '', class:"padded"
           @tag 'atom-text-editor', outlet:'templateContentEditor'
 
   initialize: ->
@@ -73,6 +76,7 @@ class TemplateGeneratorBottomPanel extends View
   onSelectViewSelectionChanged: ( view ) ->
     # Hide the text editor
     @templateContentEditor.hide()
+    @tgRightPane.find("span").replaceWith("<span></span>")
     # reset the content string variable and text
     @templateContentEditor.data('content-string', undefined)
     @templateContentEditor[0].getModel().setText("")
@@ -83,14 +87,19 @@ class TemplateGeneratorBottomPanel extends View
       fileName = view.find('.editable-label > span.item-title').html()
       type = view.data('type')
       fContent = view.data('item-list-data').content or ""
-      if type =="FILE"
+      if type =="FILE" || type == "URL"
         grammar = @getGrammarFromExtension(TemplateGeneratorUtilities.getExtensionFromFileName(fileName).replace('.',""))
+
+        if type == "URL"
+          @tgRightPane.find("span").replaceWith("<span class=\"padded\">Enter URL below</span>")
 
         if grammar != undefined
           @templateContentEditor[0].getModel().setGrammar(grammar)
 
         @templateContentEditor[0].getModel().setText(fContent)
         @templateContentEditor.fadeIn(200)
+
+
     else
       @currentSelectedItem = undefined
 

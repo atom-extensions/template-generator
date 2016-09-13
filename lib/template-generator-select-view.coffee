@@ -12,6 +12,7 @@ class TemplateGeneratorSelectListView extends View
           @button class:'btn icon icon-database', 'data-type':'GROUP', click:'onAddItemButtonClicked'
           @button class:'btn icon icon-file-directory', 'data-type':'FOLDER',click:'onAddItemButtonClicked'
           @button class:'btn icon icon-file-code', 'data-type':'FILE',click:'onAddItemButtonClicked'
+          @button class:'btn icon icon-globe', 'data-type':'URL', click:'onAddItemButtonClicked'
       @div class:'select-list block', =>
         @ol class:'list-group', outlet:'list', =>
 
@@ -124,12 +125,12 @@ class TemplateGeneratorSelectListView extends View
     srcElement = $(e.target)
     type = srcElement.data('type')
     sName = "#{type} #{@list.children().length}"
-    sName = "#{sName}.ext" if type == "FILE"
+    sName = "#{sName}.ext" if type == "FILE" || type == "URL"
 
     @addItem {
       'type': type
       'name': sName
-      'content': if type == "FILE" then "" else undefined
+      'content': if type == "FILE" then "" else if type == "URL" then "" else undefined
     }
 
   # onListItemButtonClicked: Event Handler for the actions buttons on the list item
@@ -147,12 +148,12 @@ class TemplateGeneratorSelectListView extends View
       list = listItem.children('ol.list-group')
       type = $(e.target).data('type')
       sName = "#{type} #{list.children().length}"
-      sName = "#{sName}.ext" if type == "FILE"
+      sName = "#{sName}.ext" if type == "FILE" || type == "URL"
 
       @addItem {
         'type':type
         'name': sName
-        'content': if type == "FILE" then "" else undefined
+        'content': if type == "FILE" || type == "URL" then "" else undefined
         }, list
 
     e.preventDefault()
@@ -186,6 +187,7 @@ class TemplateGeneratorSelectListView extends View
             @span class:'icon icon-database text-highlight', 'data-type':'GROUP' if item.type == "GROUP" || item.type == "FOLDER"
             @span class:'icon icon-file-directory text-highlight', 'data-type':'FOLDER' if item.type == "GROUP" || item.type == "FOLDER"
             @span class:'icon icon-file-code text-highlight', 'data-type':'FILE' if item.type == "GROUP" || item.type == "FOLDER"
+            @span class:'icon icon-globe text-highlight', 'data-type':'URL' if item.type == "GROUP" || item.type == "FOLDER"
           @span class:'icon icon-remove-close text-highlight'
         @ol class:'list-group', style:'display: none;' if item.type == "GROUP" || item.type == "FOLDER"
 
