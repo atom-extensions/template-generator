@@ -57,7 +57,6 @@ module.exports =
                 else
                   atom.notifications.addError "Fetching file at #{sURL} threw an error"
               console.log(sFP)
-
             downloadFile sFilePath, item.content
 
         else if item.type == "FILE"
