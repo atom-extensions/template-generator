@@ -1,25 +1,21 @@
-Eh:
-  type: "GROUP"
-  "EHEHHH.txt":
-    type: "URL"
-    content: "http://bitten-byte.com/file.txt"
-  "[{name}].jpg":
-    type: "URL"
-    content: "http://bitten-byte.com/file.jpg"
-  "ad.jpg":
-    type: "URL"
-    content: "http://bitten-byte.com/file.png"
-  "FILE 4.ext":
+"[{[packageName]}]":
+  type: "FOLDER"
+  "package.json":
     type: "FILE"
-  "FILE 5.ext":
+    content: '''
+      {
+        "name": "[{[packageName|lowerCase]}]",
+        "version": "0.0.1"
+      }
+    '''
+  "index.coffee":
     type: "FILE"
-  "FILE 6.ext":
-    type: "FILE"
-"GROUP 1":
-  type: "GROUP"
-  "FILE 0.ext":
-    type: "FILE"
-  "FILE 1.ext":
-    type: "FILE"
-  "FOLDER 2":
-    type: "FOLDER"
+    content: '''
+      module.exports = [{[packageName|pascalCase]}] =
+        
+        activator: ( params ) ->
+          {
+            
+          } = params
+        
+    '''

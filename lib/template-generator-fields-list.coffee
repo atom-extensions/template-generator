@@ -48,13 +48,13 @@ class FieldsListView extends View
   createTheTemplates: ( e ) ->
     self = $(e.target)
     fields = @fieldsList.children('li')
-    sFieldsArray = []
+    sFieldsArray = {}
 
     # Loop through the UI and get the fields and thier names
     _.each fields, ( fElement ) ->
-      fieldName = $(fElement).data( 'field-item-data' )
+      fieldName = $(fElement).data( 'field-item-data' ).name
       fieldValue = fElement.children[0].getModel().getText()
-      sFieldsArray.push [fieldName, fieldValue]
+      sFieldsArray[fieldName] = fieldValue
 
     targetPath = path.join("#{atom.project.getPaths()[0]}","#{@selectedPathTextField.getModel().getText()}")
     transformedTemplate = TemplateGeneratorUtilities.tansformTemplateObjectWithFields @template, sFieldsArray
@@ -93,7 +93,7 @@ class FieldsListView extends View
           tabLength: 2
           softTabs: true
           softWrapped: false
-          placeholderText: item)
+          placeholderText: item.name)
 
   # populateFields: Populate all the fields in the modal panel
   #
@@ -103,7 +103,7 @@ class FieldsListView extends View
   populateFields: ( fields ) ->
     @fieldsList.empty()
     nTabIndex = 1
-    if fields.length > 0
+    if fields?.length > 0
         for field in fields
           itemView = $(@viewForItem(field, nTabIndex))
           itemView.data('field-item-data', field)
@@ -119,4 +119,7 @@ class FieldsListView extends View
     @panel = atom.workspace.addModalPanel(item: this)
     fieldsList = TemplateGeneratorUtilities.parseTemplate( @template )
 
-    @populateFields(_.uniq fieldsList)
+    uniqFields = _.uniq fieldsList, false, ( field, index, array ) ->
+      field.name
+
+    @populateFields(uniqFields)

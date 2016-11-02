@@ -3,33 +3,87 @@ _ = require 'underscore'
 Path = require 'path'
 _fs = require 'fs-plus'
 _rq = require 'request'
-
+_changecase = require 'change-case'
 
 
 module.exports =
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   getDirname: ( path ) ->
     if _fs.isFileSync( path )
       Path.dirname(path)
     else
       path
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   getRelativePathToProject: ( path ) ->
     Path.relative( atom.project.getPaths()[0], path )
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   getTemplatesDataFromFile: ->
     configFilePath = atom.config.get('template-generator.templatesFilePath')
 
     # Read the config file from and populate the list
     CSON.readFileSync configFilePath
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   getExtensionFromFileName: ( fileName ) ->
     Path.extname(fileName)
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   writeTemplatesDataToFile: ( data ) ->
     configFilePath = atom.config.get('template-generator.templatesFilePath')
     CSON.writeFileSync configFilePath, data
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   generateFilesUsingTemplateObject: ( templateObject, parentFolder ) ->
     bSuccess = true
     iterateOverObject = ( obj, sParentFolderPath ) ->
@@ -72,25 +126,50 @@ module.exports =
 
     bSuccess
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   getFieldsFromTemplate: ( str ) ->
     retArr = []
-    regex = /(\[\{\[([a-zA-Z0-9_]+)\]\}\])/g
+    regex = /\[{\[([\w\s]*)[\s|]*([\w\s]*)\]}\]/g
 
     # Check for fields in the Template content property
     match = regex.exec( str )
     while ( match != null )
-      retArr.push match[2]
+      field = {}
+      field.name = match[1]
+      field.casetransform = match[2]
+      field.fullmatch = match[0]
+      retArr.push field
+
       match = regex.exec( str )
 
     retArr
 
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
   parseTemplate: ( template ) ->
     fields = []
     self = @
 
     iterateOverItem = ( items ) ->
+
       for key of items
-        fields = fields.concat(self.getFieldsFromTemplate key)
+        # If the key is "type" and "content" that means its a variable so parse it
+        fields = fields.concat(self.getFieldsFromTemplate key) if (key isnt "type") and (key isnt "content")
         if key == "content"
           fields = fields.concat(self.getFieldsFromTemplate items[key])
 
@@ -101,38 +180,56 @@ module.exports =
 
     fields
 
-  tansformTemplateObjectWithFields: ( t, sFA ) ->
+  transformString: ( str, targetcase ) ->
+    _changecase[targetcase]?(str) or str
 
-    ienumrator = ( templateObject, sFieldsArray ) ->
-      _obj = {}
 
-      #  Find and replace all the fields from given string
-      strReplace = ( str ) ->
-        ret = str
-        for field in sFieldsArray
-          ret = ret.replace ///\[\{\[#{field[0]}\]\}\]///g, field[1]
-        ret
+  # Public Internal Deprecated: description.
+  #
+  # argument - argument description
+  #
+  # Examples
+  #
+  #  example
+  #
+  # returns/raises section
+  tansformTemplateObjectWithFields: ( templateObject, sFieldsArray ) ->
+    scope = this
 
-      # Iterate over every property in the Object and replace fields
-      _.each templateObject, ( hValue, sKey ) ->
-        # Cache the values
-        sOld = sNew = sKey
-        hOld = hNew = hValue
+    transformedTemplate = {}
 
-        # If the current property is Object and recurse through it
-        if _.isObject hValue
-          hNew = ienumrator hOld, sFieldsArray
+    replaceFieldsInString = ( str ) ->
+      fields = scope.getFieldsFromTemplate(str)
 
-        # Replace the fields in the key
-        sNew = strReplace sOld
+      _.each fields, ( field ) ->
+        strToReplace = sFieldsArray[field.name]
+        if strToReplace?.length
+          str = str.replace field.fullmatch, scope.transformString(strToReplace, field.casetransform)
 
-        # Only replace fields in property if the property key is type content
-        if sKey == "content"
-          hNew = strReplace hOld
+      str
 
-        # Return the New Object
-        _obj[sNew] = hNew
+    recursiveReplace = ( _object, context ) ->
 
-      _obj
+      _.each _object, ( value, key ) ->
+        transformedKey = ""
+        transformedValue = {}
 
-    ienumrator t, sFA
+        if key.indexOf("[{[") > -1
+          transformedKey = replaceFieldsInString(key)
+        else
+          transformedKey = key
+
+        if _.isString(value) and value.indexOf("[{[") > -1
+          transformedValue = replaceFieldsInString(value)
+        else if (_.isObject value)
+          recursiveReplace value, transformedValue
+        else
+          transformedValue = value
+
+        @[transformedKey] = transformedValue
+
+      , context
+
+    recursiveReplace templateObject, transformedTemplate
+
+    transformedTemplate

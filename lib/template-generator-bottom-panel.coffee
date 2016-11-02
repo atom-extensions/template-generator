@@ -29,20 +29,6 @@ class TemplateGeneratorBottomPanel extends View
     ceditor.onDidStopChanging (  ) =>
       validContentBool = true
 
-      ceditor.scan /\[\{\[(.*)\]\}\]/gmi , ( object ) ->
-        validregex = /[^a-zA-Z0-9_]/gmi
-        if validregex.test (object.match[1])
-          validContentBool = false
-          message_str = "template-generator : Illegal character used as variable name"
-          message_desc = "Variable names with illegall characters wont be displayed.\n"
-          message_desc = "Stack : \n"
-          message_desc += "\tVariable Name : #{object.match[0]} \n"
-          message_desc += "\tLine : #{object.computedRange.start}\n"
-          atom.notifications.addError("Only Alphanumeric characters allowed as variable names", {
-            detail: message_desc
-            })
-          object.stop()
-
       if @currentSelectedItem?
           @currentSelectedItem.data('item-list-data').content = ceditor.getText()
 
