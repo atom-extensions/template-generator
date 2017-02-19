@@ -5,6 +5,8 @@ module.exports =
 
 class TemplateGeneratorSelectListView extends View
 
+  @isEditing:  true
+
   @content: ->
     @div class:'tg-tree-view-wrapper', =>
       @div class:'tg-tree-view-header', =>
@@ -62,7 +64,7 @@ class TemplateGeneratorSelectListView extends View
   startEditingTitle: ( e ) =>
     spanTitle = $(e.target)
     editorTitle = spanTitle.next()
-    editorTitle[0].getModel().setText(spanTitle.html())
+    editorTitle.val(spanTitle.html())
     spanTitle.hide()
     editorTitle.show()
     editorTitle.focus()
@@ -78,7 +80,7 @@ class TemplateGeneratorSelectListView extends View
     spanTitle = editorTitle.prev()
     li = spanTitle.closest('li')
     type = li.data('type')
-    newText = editorTitle[0].getModel().getText()
+    newText = editorTitle.val()
 
     if e.which == 13
       isEmptyString = newText == ""
@@ -89,20 +91,24 @@ class TemplateGeneratorSelectListView extends View
       if isEmptyString
         atom.notifications.addWarning('Name Cannot be empty')
         editorTitle.blur()
+        return
 
-      if bNameExists
+      else if bNameExists
         atom.notifications.addWarning('The Name that you are trying to give already exists, please use another one ...')
         editorTitle.blur()
+        return
 
-      if type == "FILE" and not isFileName
+      else if type == "FILE" and not isFileName
         atom.notifications.addWarning('File Name should have Extension')
         editorTitle.blur()
+        return
 
-      if not isEmptyString and not bNameExists
+      else if not isEmptyString and not bNameExists
         spanTitle.html(newText)
         li.attr('data-name', newText)
         editorTitle.hide()
-        spanTitle.fadeIn(400)
+        spanTitle.show()
+
 
   # cancelEditingTitle: Stop Title Editing
   #
@@ -110,6 +116,7 @@ class TemplateGeneratorSelectListView extends View
   #
   # Returns the [Description] as `undefined`.
   cancelEditingTitle: ( e ) =>
+
     editorTitle = $(e.target)
     spanTitle = editorTitle.prev()
 
@@ -177,11 +184,11 @@ class TemplateGeneratorSelectListView extends View
     sContent = item.content or ""
 
     $$ ->
-      @li 'data-type':item.type, 'data-name': item.name, 'isExpanded': false,  =>
+      @li 'data-type':item.type, 'data-name': item.name, 'isExpanded': false, tabIndex: -1,  =>
         @span class:'icon icon-chevron-right dropdown-icon' if item.type == "GROUP" || item.type == "FOLDER"
-        @div class:'editable-label inline-block', =>
+        @div class:'editable-label inline-block native-key-bindings', =>
           @span item.name, class:'item-title inline-block'
-          @tag 'atom-text-editor', class:'item-title-editor inline-block', style:'display: none; width: 100%;', mini:true
+          @input class:'input-text item-title-editor inline-block', style:'display: none; width: 100%;'
         @div class:'pull-right action-buttons', =>
           if item.type == "GROUP" || item.type == "FOLDER"
             @span class:'icon icon-database text-highlight', 'data-type':'GROUP' if item.type == "GROUP" || item.type == "FOLDER"
