@@ -10,10 +10,9 @@ class TemplateGeneratorBottomPanel extends View
       @div class:'tg-panel-header', =>
         @span class:'icon icon-package text-error'
         @span 'Template Generator Settings View',class:'text-highlight'
-        @div class:'pull-right', =>
-          @button 'Save', class:'padded btn btn-success icon icon-file-code', click:'saveSettings'
-          @span ' '
-          @button 'Close', class: 'padded btn btn-warning icon icon-remove-close', click:'hide'
+        @div class:'inline-block pull-right', =>
+          @button 'Save', class:'inline-block btn btn-success icon icon-file-code', click:'saveSettings'
+          @button 'Close', class: 'inline-block btn btn-warning icon icon-remove-close', click:'hide'
       @div class:'tg-panel-body', =>
         @div class:'tg-left-pane', =>
           @subview 'tgSelectListView', new TemplateGeneratorSelectListView()
@@ -31,8 +30,6 @@ class TemplateGeneratorBottomPanel extends View
 
       if @currentSelectedItem?
           @currentSelectedItem.data('item-list-data').content = ceditor.getText()
-
-    @templateContentEditor.hide()
 
   # saveSettins: Save the Current state of the panel
   #
@@ -60,8 +57,6 @@ class TemplateGeneratorBottomPanel extends View
   #
   # Returns the [Description] as `undefined`.
   onSelectViewSelectionChanged: ( view ) ->
-    # Hide the text editor
-    @templateContentEditor.hide()
     @tgRightPane.find("span").replaceWith("<span></span>")
     # reset the content string variable and text
     @templateContentEditor.data('content-string', undefined)
@@ -83,9 +78,6 @@ class TemplateGeneratorBottomPanel extends View
           @templateContentEditor[0].getModel().setGrammar(grammar)
 
         @templateContentEditor[0].getModel().setText(fContent)
-        @templateContentEditor.fadeIn(200)
-
-
     else
       @currentSelectedItem = undefined
 
