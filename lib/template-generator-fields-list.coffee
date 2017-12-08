@@ -11,23 +11,20 @@ textEditor = buildTextEditor
   tabLength: 2
   softTabs: true
   softWrapped: false
-  placeholderText: ''
+  placeholderText: 'Path'
 
 module.exports =
 class FieldsListView extends View
 
   @content: ->
-    @div tabIndex: -1, class:'tg-fields-list-view inset-panel', =>
-      @div class:'panel-heading', =>
-        @span 'List of Fields you would like to replace in the files and file names'
-      @div class:'panel-body', =>
-        @div class:'block fields-list select-list', =>
-          @subview 'selectedPathTextField', new TextEditorView(editor: textEditor)
-          @ol class:'fields-group list-group', outlet:'fieldsList'
-        @div class:'block btn-toolbar', =>
-          @div class:'btn-group', =>
-            @button 'Create', class:'btn btn-success', click:'createTheTemplates', 'tabindex':100
-            @button 'Cancel', class:'btn btn-error', click:'close', 'tabindex':101
+    @div tabIndex: -1, class:'tg-fields-list-view', =>
+        @subview 'selectedPathTextField', new TextEditorView(editor: textEditor)
+        @label style:'margin-bottom: 10px', 'Fields you would like to replace in the files and file names'
+        @ol class:'list-group', outlet:'fieldsList'
+        @div class:'btn-toolbar block', =>
+          @div class:'btn-group pull-right', =>
+            @button 'Cancel', class:'btn icon icon-x', click:'close', 'tabindex':100
+            @button 'Create', class:'btn btn-primary icon icon-check', click:'createTheTemplates', 'tabindex':101
 
   initialize: ( {template, selectedPath}={} ) ->
     @template = template
@@ -38,6 +35,7 @@ class FieldsListView extends View
       'tg-fields-list-view:focus-next': ( e ) => @focusNextInput(1)
       'tg-fields-list-view:focus-previous': ( e ) => @focusNextInput(-1)
       'core:cancel': ( e ) => @close()
+      'core:confirm': ( e ) => @createTheTemplates( e )
 
 
   # createTheTemplates:
@@ -87,7 +85,7 @@ class FieldsListView extends View
   viewForItem : ( item, nIndex ) ->
 
     $$ ->
-      @li =>
+      @li class:'list-item', =>
         @subview "item-#{nIndex}", new TextEditorView(editor: buildTextEditor
           mini: true
           tabLength: 2
