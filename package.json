@@ -1,7 +1,7 @@
 {
   "name": "template-generator",
   "main": "./lib/main",
-  "version": "0.15.1",
+  "version": "0.16.0",
   "description": "Create Templates of Files / file structure and create these files whenever you want and how ever you want",
   "keywords": [],
   "repository": "https://github.com/sdinesh86/template-generator.git",
